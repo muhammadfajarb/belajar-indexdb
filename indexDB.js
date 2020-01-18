@@ -44,3 +44,21 @@ dbPromise.then(function (db) {
     console.log('Data yang diambil: ');
     console.log(items);
 });
+
+// Membaca banyak data dengan cursor
+dbPromise.then(function (db) {
+    var tx = db.transaction('buku', 'readonly');
+    var store = tx.objectStore('buku');
+    return store.openCursor();
+}).then(function ambilBuku(cursor) {
+    if (!cursor) {
+        return;
+    }
+    console.log('Posisi cursos: ', cursor.key);
+    for (var field in cursor.value) {
+        console.log(cursor.value[field]);
+    }
+    return cursor.continue().then(ambilBuku);
+}).then(function () {
+    console.log('Tidak ada data lain.');
+});
