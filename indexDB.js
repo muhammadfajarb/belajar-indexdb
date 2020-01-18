@@ -24,3 +24,13 @@ dbPromise.then(function (db) {
 }).catch(function () {
     console.log('Buku gagal disimpan.')
 })
+
+// Get one data
+dbPromise.then(function (db) {
+    var tx = db.transaction('buku', 'readonly');
+    var store = tx.objectStore('buku');
+    // mengambil primary key berdasarkan isbn
+    return store.get(123456789);
+}).then(function (val) {
+    console.dir(val);
+});
