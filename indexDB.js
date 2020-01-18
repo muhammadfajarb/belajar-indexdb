@@ -62,3 +62,21 @@ dbPromise.then(function (db) {
 }).then(function () {
     console.log('Tidak ada data lain.');
 });
+
+// Memperbarui data
+dbPromise.then(function (db) {
+    var tx = db.transaction('buku', 'readwrite');
+    var store = tx.objectStore('buku');
+    var item = {
+        judul: 'Menjadi Android Developer Expert (MADE) Versi 2',
+        isbn: 123456789,
+        description: 'Belajar pemrograman Android di Dicoding dengan modul online dan buku.',
+        created: new Date().getTime()
+    };
+    store.put(item); // dapat juga digunakan untuk menggantikan fungsi method add()
+    return tx.complete;
+}).then(function () {
+    console.log('Buku berhasil disimpan.');
+}).catch(function () {
+    console.error('Buku gagal disimpan.')
+})
