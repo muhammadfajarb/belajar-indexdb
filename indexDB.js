@@ -80,3 +80,13 @@ dbPromise.then(function (db) {
 }).catch(function () {
     console.error('Buku gagal disimpan.')
 })
+
+// Menghapus data
+dbPromise.then(function (db) {
+    var tx = db.transaction('buku', 'readwrite');
+    var store = tx.objectStore('buku');
+    store.delete(123456789);
+    return tx.complete;
+}).then(function () {
+    console.log('Buku berhasil dihapus');
+});
