@@ -90,3 +90,14 @@ dbPromise.then(function (db) {
 }).then(function () {
     console.log('Buku berhasil dihapus');
 });
+
+// Database versioning
+var dbPromise = idb.open('perpustakaan', 2, function (upgradeDb) {
+    switch (upgradeDb.oldVersion) {
+        case 0:
+            upgradeDb.createObjectStore('buku', { keyPath: 'isbn' });
+        case 1:
+            var bukuStore = upgradeDb.transaction.objectStore('buku');
+            bukuStore.createIndex('tahun', 'tahun');
+    }
+});
