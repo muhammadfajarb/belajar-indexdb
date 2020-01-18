@@ -34,3 +34,13 @@ dbPromise.then(function (db) {
 }).then(function (val) {
     console.dir(val);
 });
+
+// Get all data
+dbPromise.then(function (db) {
+    var tx = db.transaction('buku', 'readonly');
+    var store = tx.objectStore('buku');
+    return store.getAll();
+}).then(function (items) {
+    console.log('Data yang diambil: ');
+    console.log(items);
+});
